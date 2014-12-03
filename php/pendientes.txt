@@ -1,0 +1,2 @@
+//validaciones de numeros
+//cuando una persona se inserta abajo no jala
