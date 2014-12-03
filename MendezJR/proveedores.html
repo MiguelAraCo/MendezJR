@@ -1,0 +1,148 @@
+<div class="container" style="padding-top:20px;">
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Proveedores</h3>
+    </div>
+  </div>
+  <div class="row">
+  <!--primera columna-->
+    <div class="col-md-6">
+      <!--<div class="row">-->
+        <!--<div class="col-md-6">-->
+          <div class="panel panel-default">
+            <div class="panel-heading"><h4>Datos para registro</h4></div>
+            <div class="panel-body">
+              <div class="">
+                <div class="input-group form-group nombre">
+                  <span class="input-group-addon">Nombre, Razon Social</span>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="">
+                <div class="input-group form-group direccion">
+                  <span class="input-group-addon">Direccion</span>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="">
+                <div class="input-group form-group telefonos">
+                  <span class="input-group-addon">Telefonos</span>
+                  <input type="text" class="form-control telefono">
+                </div>
+              </div>
+              <div class="">
+                <div class="input-group form-group rfc">
+                  <span class="input-group-addon">RFC</span>
+                  <input type="text" class="form-control rfc">
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!--<div class="panel panel-default">
+            <div class="panel-heading"><h4>Datos de contactos</h4></div>
+            <div class="panel-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered notaItemsTable">
+                  <thead>
+                    <tr>
+                      <th>Operacion</th>
+                      <th>Nombre</th>
+                      <th>Correo</th>
+                      <th>Telefono</th>
+                    </tr>
+                  </thead>
+                  <tbody class="notaImtes">
+                    <tr>
+                      <td><span class="contenEditale operacionC" contenteditable></span></td>
+                      <td><span class="contenEditale nombreC" contenteditable></span></td>
+                      <td><span class="contenEditale correC" contenteditable></span></td>
+                      <td><span class="contenEditale telefonoC" contenteditable></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>-->
+
+    </div>
+    <!--segunda columna-->
+    <div class="col-md-6">
+      <!--<div class="col-md-6">-->
+        <div class="panel panel-default">
+          <div class="panel-heading"><h4>Credito</h4></div>
+          <div class="panel-body">
+             <div class="">
+                <div class="input-group form-group limite">
+                  <span class="input-group-addon">Limite</span>
+                  <input type="number" class="form-control limite" min=0 value="0">
+                </div>
+              </div>
+               <div class="">
+                <div class="input-group form-group disponible">
+                  <span class="input-group-addon">Disponible</span>
+                  <input type="text" class="form-control disponible" disabled>
+                </div>
+              </div>
+               <div class="">
+                <div class="input-group form-group periodo">
+                  <span class="input-group-addon">Periodo</span>
+                  <input type="number" class="form-control periodo" min=0 value="0">
+                </div>
+              </div>
+               <div class="">
+                <div class="input-group form-group periodoa">
+                  <span class="input-group-addon">Periodo a</span>
+                  <select class="form-control periodicidad">
+                    <option value="dias">dias</option>
+                    <option value="semanas">semanas</option>
+                    <option value="quincenas">quincenas</option>
+                    <option value="meses">meses</option>
+                  </select>
+                </div>
+              </div>
+              <div class="">
+                <div class="input-group form-group pagos">
+                  <span class="input-group-addon">Pagos</span>
+                  <input type="number" class="form-control numpagos" min=0 value="0">
+                </div>
+              </div>
+              <div class="">
+                <div class="input-group form-group pagosc">
+                  <span class="input-group-addon">
+                    <input type="checkbox" class="cerrado">
+                    <label>Cerrado</label>
+                  </span>
+                </div>
+              </div>
+          </div>
+        </div>
+
+      <!--</div>-->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">Notas</div>
+        <div class="panel-body">
+           <div class="">
+                <!--<div class="input-group form-group">-->
+            <textarea class="form-control comentarios" rows="6" cols></textarea>
+                <!--</div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mainactions">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-primary clientes actualizar" style="display:none;">Actualziar</button>
+      <button type="button" class="btn btn-primary clientes guardar">Guardar</button>
+      <button type="button" class="btn btn-default cancelar">Cancelar</button>
+    </div>
+  </div>
+
+
+</div>

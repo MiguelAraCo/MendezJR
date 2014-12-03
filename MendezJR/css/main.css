@@ -1,0 +1,30 @@
+.ui-autocomplete-loading {
+  background: white url("../img/ui-anim_basic_16x16.gif") right center no-repeat;
+}
+
+.ui-widget-content {
+    background: #ffffff url("../img/ui-bg_flat_75_ffffff_40x100.png") 50% 50% repeat-x;
+}
+
+.notaItemsTable td, .notaItemsTable th {
+    min-width: 50px;
+    height: 21px;
+}
+
+.notaItemsTable span.contenEditale {
+    width: 100%;
+    display: block;
+    background-color: rgba(189, 159, 159, 0.21);
+}
+
+.notaItemsTable .removeRow{
+    margin-left: 10px;
+    display: inline-block;
+    background: url('../img/removeSpriteS.png') no-repeat 0 0;
+    width: 15px;
+    height: 16px;
+}
+
+.notaItemsTable .removeRow:hover{
+  	background: url('../img/removeSpriteS.png') no-repeat 0 -16px;
+}

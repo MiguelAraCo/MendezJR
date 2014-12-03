@@ -1,0 +1,135 @@
+
+<div class="container" style="padding-top:20px;">
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Ventas <input type="text" class="ventaN"></h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+            <div class="panel-heading"><h4>Detalle</h4></div>
+            <div class="panel-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered notaItemsTable">
+                  <thead>
+                    <tr>
+                      <th>Borrar</th>
+                      <th>Codigo de Barras</th>
+                      <th>Producto</th>
+                      <th>Almacen</th>
+                      <th>Unidad</th>
+                      <th>Cantidad</th>
+                      <th>PU</th>
+                      <th>Total</th>
+                      <th>Observaciones</th>
+                    </tr>
+                  </thead>
+                  <tbody class="notaImtes">
+                    <tr>
+                      <td><span class="removeRow"> </span></td>
+                      <td><span class="contenEditale barras" contenteditable></span></td>
+                      <td><span class="contenEditale producto" contenteditable></span></td>
+                      <td><span class="contenEditale almacen" contenteditable></span></td>
+                      <td><span class="unidad"></span></td>
+                      <td><span class="contenEditale cantidad" contenteditable></span></td>
+                      <td><span class="contenEditale pu" contenteditable></span></td>
+                      <td><span class="total"></span></td>
+                      <td><span class="contenEditale obs" contenteditable></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <h4>Total: $<span id="supTotal">0.0</span></h4>
+              </div>
+            </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+
+    <div class="col-md-6">
+      <div class="panel panel-default">
+            <div class="panel-heading"><h4>Cliente</h4></div>
+            <div class="panel-body">
+              <div class="input-group form-group">
+                  <span class="input-group-addon">Cliente</span>
+                  <input type="text" class="form-control cliente">
+              </div>
+            <!--  <div class="input-group form-group facturarContainer">
+                  <span class="input-group-addon">
+                    <input type="checkbox" class="facturar">
+                    <label>Facturar</label>
+                  </span>
+
+              </div>-->
+              <div class="input-group form-group facturarContainer" >
+                  <span class="input-group-addon">Factura #</span>
+                  <input type="text" class="form-control factura">
+              </div>
+              <div class="input-group form-group">
+                  <span class="input-group-addon">Envio</span>
+                  <select class="form-control envio">
+                      <option value="0">Selecciona una direccion</option>
+                  </select>
+
+              </div>
+              <div class="input-group form-group">
+                  <span class="input-group-addon">Recibe</span>
+                  <select class="form-control recive">
+                      <option value="0">Selecciona un resposable</option>
+                  </select>
+              </div>
+            </div>
+      </div>
+    </div>
+
+
+     <div class="col-md-6">
+      <div class="panel panel-default">
+            <div class="panel-heading"><h4>Pago</h4></div>
+            <div class="panel-body">
+              <div class="input-group form-group">
+                  <span class="input-group-addon">Tipo de pago</span>
+                  <select class="form-control tipo_pago">
+                      <option value="Efectivo">Efectivo</option>
+                      <option value="Tcredito">Tarjeta</option>
+                      <option value="Credito">Credito</option>
+                      <option value="Cheque">Cheque</option>
+                      <option value="Ncredito">Nota de Credito</option>
+                  </select>
+              </div>
+              <div class="input-group form-group">
+                  <span class="input-group-addon">Documento Pago</span>
+                  <input type="text" class="form-control documento_pago">
+              </div>
+              <div class="input-group form-group">
+                  <span class="input-group-addon">Cantidad recibida</span>
+                  <input type="number" class="form-control cantidad">
+              </div>
+              <div class="input-group form-group">
+                  <span class="input-group-addon">Cambio</span>
+                  <input type="text" class="form-control cambio" disabled>
+              </div>
+              <div class="input-group form-group">
+                  <span class="input-group-addon">Banco</span>
+                  <input type="text" class="form-control banco">
+              </div>
+            </div>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="row mainactions">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-primary actualizar" style="display:none;">Actualziar</button>
+      <button type="button" class="btn btn-primary guardar">Guardar</button>
+      <button type="button" class="btn btn-default cancelar">Cancelar</button>
+    </div>
+  </div>
+
+
+</div>

@@ -1,0 +1,162 @@
+<div class="container" style="padding-top:20px;">
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Productos</h3>
+    </div>
+  </div>
+  <div class="row">
+  <!--primera columna-->
+    <div class="col-md-6">
+      <!--<div class="row">-->
+        <!--<div class="col-md-6">-->
+          <div class="panel panel-default">
+            <div class="panel-heading"><h4>Datos para registro</h4></div>
+            <div class="panel-body">
+              <div class="">
+                <div class="input-group form-group">
+                  <span class="input-group-addon">Descripcion</span>
+                  <input type="text" class="form-control descripcion">
+                </div>
+              </div>
+              <div class="">
+                <div class="input-group form-group">
+                  <span class="input-group-addon">Unidad de medida</span>
+                  <select class="form-control unidad">
+                    <option value="Kilo">Kilo</option>
+                    <option value="Gramo">Gramo</option>
+                    <option value="Pieza">Pieza</option>
+                    <option value="Caja">Caja</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display:none;">
+                <div class="input-group form-group disponible">
+                  <span class="input-group-addon">Disponible</span>
+                  <input type="text" class="form-control disponible" disabled>
+                </div>
+              </div>
+              <div class="">
+                <div class="input-group form-group">
+                  <span class="input-group-addon">Merma en transporte</span>
+                  <input type="number" class="form-control merma" min=0 value="0">
+                </div>
+              </div>
+              <div class="">
+                <div class="input-group form-group">
+                  <span class="input-group-addon">Precio de venta</span>
+                  <input type="number" class="form-control precio" min=0 value="0">
+                </div>
+              </div>
+              <div class="">
+                <div class="input-group form-group">
+                  <span class="input-group-addon">Inventario minimo</span>
+                  <input type="number" class="form-control minimo" min=0 value="0">
+                </div>
+              </div>
+              <div class="">
+                <div class="input-group form-group">
+                  <span class="input-group-addon">Codigo de barras</span>
+                  <input type="text" class="form-control barras">
+                </div>
+              </div>
+              <div class="">
+                <div class="input-group form-group">
+                  <span class="input-group-addon">
+                    <input type="checkbox" class="invertida">
+                    <label>Receta Invertida</label>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+    </div>
+    <!--segunda columna-->
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Utima Compra</h4></div>
+        <div class="panel-body">
+
+            <div class="input-group form-group">
+              <span class="input-group-addon">Inventario Total</span>
+              <input type="text" class="form-control inventario" disabled>
+            </div>
+
+            <div class="input-group form-group">
+              <span class="input-group-addon">Proveedor</span>
+              <input type="text" class="form-control proveedor" disabled>
+            </div>
+
+            <div class="input-group form-group">
+              <span class="input-group-addon">Precio Unitario</span>
+              <input type="text" class="form-control pu" disabled>
+            </div>
+
+            <div class="input-group form-group">
+              <span class="input-group-addon">Fecha</span>
+              <input type="text" class="form-control fecha" disabled>
+            </div>
+
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Notas</h4></div>
+        <div class="panel-body">
+           <div class="">
+                <!--<div class="input-group form-group">-->
+            <textarea class="form-control comentarios" rows="8" cols></textarea>
+                <!--</div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+            <div class="panel-heading"><h4>Receta</h4></div>
+            <div class="panel-body">
+              <div class="">
+                <table class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>
+                        Producto
+                      </th>
+                      <th>
+                        Cantidad
+                      </th>
+                      <th>
+                        Merma
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="recetaTabla">
+                    <tr class="recetaItem">
+                      <td>
+                       <input type="text" class="form-control recetaProducto">
+                      </td>
+                      <td>
+                        <input type="number" class="form-control recetaCantidad" min=0 value="0">
+                      </td>
+                      <td>
+                        <input type="checkbox" class="merma">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+  <div class="row mainactions">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-primary actualizar" style="display:none;">Actualziar</button>
+      <button type="button" class="btn btn-primary guardar">Guardar</button>
+      <button type="button" class="btn btn-default cancelar">Cancelar</button>
+    </div>
+  </div>
+
+
+</div>
