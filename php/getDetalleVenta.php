@@ -1,7 +1,7 @@
 <?php
 
 header("Content-type:application/json");
-  
+
 require_once("Coneccion.php");
 require_once("constants.php");
 
@@ -13,10 +13,12 @@ $array2 = array();
 if ($queryS === null or empty($queryS)){
   echo json_encode($constants->operationError);
 } else {
-  
-  $queryTBD = "SELECT ".$prodctosTableName->detalleVentas.".id, venta, producto, ".$prodctosTableName->ventasTableName.".descripcion descripcionproducto, almacen, ".$prodctosTableName->almacenesTableName.".descripcion descripcionalmacen, unidad, cantidad, precio_unitario, total, observaciones, ".$prodctosTableName->detalleVentas.".sucursal, ".$prodctosTableName->detalleVentas.".estado FROM ".$prodctosTableName->detalleVentas." LEFT join ".$prodctosTableName->ventasTableName." on ".$prodctosTableName->detalleVentas.".producto = ".$prodctosTableName->ventasTableName.".id LEFT join ".$prodctosTableName->almacenesTableName." on ".$prodctosTableName->detalleVentas.".almacen = ".$prodctosTableName->almacenesTableName.".id WHERE ".$prodctosTableName->detalleVentas.".venta = '".queryS."' ";
-  
-  
+
+  $queryTBD = "SELECT ".$constants->detalleVentas.".id, venta, producto, ".$constants->prodctosTableName.".descripcion descripcionproducto, almacen, ".$constants->almacenesTableName.
+    ".descripcion descripcionalmacen, unidad, cantidad, precio_unitario, total, observaciones, ".$constants->detalleVentas.".sucursal, ".$constants->detalleVentas.".estado FROM ".$constants->detalleVentas." LEFT join ".$constants->prodctosTableName." on "
+    .$constants->detalleVentas.".producto = ".$constants->prodctosTableName.".id LEFT join ".$constants->almacenesTableName." on ".$constants->detalleVentas.".almacen = ".$constants->almacenesTableName.".id WHERE ".$constants->detalleVentas.".venta = '".$queryS."' ";
+
+
   $result = $con->query($queryTBD,array("id", "venta", "producto", "descripcionproducto", "almacen", "descripcionalmacen", "unidad", "cantidad", "precio_unitario", "total", "observaciones", "sucursal", "estado"));
 
   echo json_encode($result);

@@ -1097,8 +1097,52 @@ function regAccionesVentas(){
     $("#supTotal").html(ui.item.total);
     $(".cliente").val(ui.item.nombre).data("id",ui.item.cliente);
     $(".factura").val(ui.item.factura);
-    $(".envio").val(ui.item.cliente_envio);
-    $(".recive").val(ui.item.cliente_recive);
+    $(".facturar").prop('checked', false);
+
+      if (ui.item.rfc == ""){
+        $(".facturarContainer").hide();
+      } else {
+        $(".facturarContainer").show();
+
+      }
+      if (ui.item.credito_limite > 0){
+        $(".tipo_pago [value=Credito]").show();
+      } else {
+        $(".tipo_pago").val("Efectivo").find("[value=Credito]").hide();
+      }
+
+      var $entrega = $(".envio");
+      $entrega.html('<option value="0">Selecciona una direccion</option>');
+      var $recive = $(".recive");
+      $recive.html('<option value="0">Selecciona un resposable</option>');
+
+      $.ajax({
+        url : clientesDireccionDEntrega,
+        data : {'id': ui.item.cliente},
+        dataType : "json",
+        success: function(data){
+          $.each(data, function(index, value){
+            $entrega.append('<option value="'+value.dentrega+'" selected="'+ (ui.item.cliente_envio == value.dentrega) +'">'+value.dentrega+'</option>');
+          });
+        },
+        error: function(jqXHR, textStatus, errorThrown ){
+          showSplashGeneral(Merror, MerrorMessage, $(".nombre input"));
+        }
+      });
+
+      $.ajax({
+        url : clientesDireccionPRecive,
+        data : {'id': ui.item.cliente},
+        dataType : "json",
+        success: function(data){
+          $.each(data, function(index, value){
+            $recive.append('<option value="'+value.precive+'"  selected="'+ (ui.item.cliente_recive == value.precive) +'">'+value.precive+'</option>');
+          });
+        },
+        error: function(jqXHR, textStatus, errorThrown ){
+        }
+      });
+
     $(".tipo_pago").val(ui.item.tipo_pago);
     $(".documento_pago").val(ui.item.documento_pago);
     $(".cantidad").val(ui.item.cantidad_recivida);
@@ -1112,13 +1156,14 @@ function regAccionesVentas(){
       success: function(data){
 
         var $entrega = $(".notaImtes");
+        $entrega.html("");
         $.each(data, function(index, value){
           $entrega.append('<tr><td><span class="removeRow"> </span></td><td><span class="contenEditale barras" contenteditable></span></td>'+
-          '<td><span class="contenEditale producto" contenteditable data-id="'+ data.producto +'">data-id="'+ data.descripcionproducto +'"</span></td>'+
-          '<td><span class="contenEditale almacen" contenteditable data-id="'+ data.almacen +'">'+ data.descripcionalmacen +'</span></td>'+
-          '<td><span class="unidad">"'+ data.unidad +'"</span></td><td><span class="contenEditale cantidad" contenteditable>"'+ data.cantidad +'"</span></td>'+
-          '<td><span class="contenEditale pu" contenteditable>"'+ data.precio_unitario +'"</span></td>'+
-          '<td><span class="total">"'+ data.total +'"</span></td><td><span class="contenEditale obs" contenteditable>"'+ data.observaciones +'"</span></td></tr>');
+          '<td><span class="contenEditale producto" contenteditable data-id="'+ value.producto +'">'+ value.descripcionproducto +'</span></td>'+
+          '<td><span class="contenEditale almacen" contenteditable data-id="'+ value.almacen +'">'+ value.descripcionalmacen +'</span></td>'+
+          '<td><span class="unidad">'+ value.unidad +'</span></td><td><span class="contenEditale cantidad" contenteditable>'+ value.cantidad +'</span></td>'+
+          '<td><span class="contenEditale pu" contenteditable>'+ value.precio_unitario +'</span></td>'+
+          '<td><span class="total">'+ value.total +'</span></td><td><span class="contenEditale obs" contenteditable>'+ value.observaciones +'</span></td></tr>');
         });
 
         addProductosAutoComplete(".contenEditale.producto", function(event, ui){
