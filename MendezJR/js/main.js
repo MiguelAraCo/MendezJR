@@ -5,8 +5,9 @@ var Mwarning = "warning";
 var Msuccess = "success";
 var MerrorMessage = "Error al guardar la informacion, por favor intentalo de nuevo, si el erorr persiste consulta al administrador.";
 var MwarningMessage = "Error al guardar los datos, parte de la informacion no fue guardada, por favor intentalo de nuevo, si el erorr persiste consulta al administrador.";
-var MsuccessMessage = "Los datos fueron guardados con exito."
+var MsuccessMessage = "Los datos fueron guardados con exito.";
 var Mserver = "http://www.mendezjr.com";
+
 
 var homePage = "home.html";
 var homeButton = "#homeButton";
@@ -57,6 +58,10 @@ var ventaSave = Mserver+"/ventaSave.php";
 var ventaUpdate = Mserver+"/ventaUpdate.php"
 var ventaAutocomplete = Mserver+"/ventaAutocomplete.php";
 var getDetalleVenta = Mserver+"/getDetalleVenta.php";
+var getExactProducto = Mserver+"/getExactProducto.php";
+
+var cortePage = "corte.html";
+var corteButton = "#corteButton";
 
 $( document ).ready(function() {
   $mainContainer = $(mainContainer);
@@ -75,6 +80,7 @@ function addActionsToMainMenus(){
   addActionToMenu(bancosButton, bancosPage, function(){regAccionesBancos();});
   //OPERACION
   addActionToMenu(ventaButton, ventaPage, function(){regAccionesVentas();});
+  addActionToMenu(corteButton, cortePage, function(){regAccionesVentas();});
 }
 
 function addActionToMenu(buttonID, pageToLoad, callbackLoad){
@@ -1086,6 +1092,7 @@ function regAccionesVentas(){
       $(".banco").data("id",ui.item.id);
   });
   addDeleteNotaRow();
+  addBarrasScan();
   addVentasFloatValidator();
   addNotaItemsTotalCalculation();
   addVentasCancelar();
@@ -1116,37 +1123,40 @@ function regAccionesVentas(){
       var $recive = $(".recive");
       $recive.html('<option value="0">Selecciona un resposable</option>');
 
-      $.ajax({
-        url : clientesDireccionDEntrega,
-        data : {'id': ui.item.cliente},
-        dataType : "json",
-        success: function(data){
-          $.each(data, function(index, value){
-            $entrega.append('<option value="'+value.dentrega+'" selected="'+ (ui.item.cliente_envio == value.dentrega) +'">'+value.dentrega+'</option>');
-          });
-        },
-        error: function(jqXHR, textStatus, errorThrown ){
-          showSplashGeneral(Merror, MerrorMessage, $(".nombre input"));
-        }
-      });
+      if (ui.item.cliente != "0"){
+        $.ajax({
+          url : clientesDireccionDEntrega,
+          data : {'id': ui.item.cliente},
+          dataType : "json",
+          success: function(data){
+            $.each(data, function(index, value){
+              $entrega.append('<option value="'+value.dentrega+'" selected="'+ (ui.item.cliente_envio == value.dentrega) +'">'+value.dentrega+'</option>');
+            });
+          },
+          error: function(jqXHR, textStatus, errorThrown ){
+            showSplashGeneral(Merror, MerrorMessage, $(".nombre input"));
+          }
+        });
 
-      $.ajax({
-        url : clientesDireccionPRecive,
-        data : {'id': ui.item.cliente},
-        dataType : "json",
-        success: function(data){
-          $.each(data, function(index, value){
-            $recive.append('<option value="'+value.precive+'"  selected="'+ (ui.item.cliente_recive == value.precive) +'">'+value.precive+'</option>');
-          });
-        },
-        error: function(jqXHR, textStatus, errorThrown ){
-        }
-      });
+        $.ajax({
+          url : clientesDireccionPRecive,
+          data : {'id': ui.item.cliente},
+          dataType : "json",
+          success: function(data){
+            $.each(data, function(index, value){
+              $recive.append('<option value="'+value.precive+'"  selected="'+ (ui.item.cliente_recive == value.precive) +'">'+value.precive+'</option>');
+            });
+          },
+          error: function(jqXHR, textStatus, errorThrown ){
+          }
+        });
+      }
+
 
     $(".tipo_pago").val(ui.item.tipo_pago);
     $(".documento_pago").val(ui.item.documento_pago);
     $(".cantidad").val(ui.item.cantidad_recivida);
-    $(".cambio").val("0");
+    //$(".cambio").val("0");
     $(".banco").val(ui.item.descripcion).data("id", ui.item.banco);
 
     $.ajax({
@@ -1228,6 +1238,51 @@ function addDeleteNotaRow(){
 
   });
 }
+
+
+//2000010018459
+//____ no sirve
+//    ___ clave articulo
+//       _____ peso en gramos
+//            _ no sirve
+
+
+function addBarrasScan(){
+
+  $(".notaItemsTable").on("keydown", ".barras", function(e) {
+    // trap the return key being pressed
+    if (e.keyCode === 13) {
+      console.log(e.target.innerHTML);
+      if (e.target.innerHTML.length == 13){
+        var saveVal = e.target.innerHTML.substr(4);
+        var $saveElement = $(this);
+        var prodid = saveVal.substring(0,3);
+        var cantidad = parseFloat(saveVal.substr(3))/10000;
+        $.ajax({
+          url : getExactProducto,
+          data : {'id': prodid},
+          dataType : "json",
+          success: function(data){
+            for (value in data){
+              //var $currElement = $(event.target);
+              $saveElement = $saveElement.parent().parent();
+              $saveElement.find(".producto").data("id",data[value].id).html(data[value].label);
+              $saveElement.find(".unidad").html(data[value].medida);
+              $saveElement.find(".pu").html(data[value].precio);
+              $saveElement.find(".cantidad").html(cantidad).blur();
+            }
+          },
+          error: function(jqXHR, textStatus, errorThrown ){
+
+          }
+        });
+      }
+      return false;
+    }
+  });
+}
+
+
 
 function getDefaultBanco($element){
  $.ajax({
@@ -1350,7 +1405,7 @@ function limpiaVentasFields(){
   $(".tipo_pago").val("Efectivo");
   $(".documento_pago").val("");
   $(".cantidad").val("");
-  $(".cambio").val("0");
+ // $(".cambio").val("0");
   $(".banco").val(varDefaultBanco["descripcion"]).data("id",varDefaultBanco["id"]);
   $(".actualizar").hide();
   $(".guardar").show();
@@ -1373,6 +1428,10 @@ function ventasGuarda(){
     dataType : "json",
     success: function(data){
       procesaAJAXQueryGeneral(data, null, limpiaVentasFields, limpiaVentasFields);
+      if (values.tipo_pago == "Efectivo" && values.cambio > 0){
+        $(".modal-body").html("Cambio: $"+(values.cantidad-values.total));
+        $('#exampleModal').modal();
+      }
     },
     error: function(jqXHR, textStatus, errorThrown ){
       showSplashGeneral(Merror, MerrorMessage);
@@ -1412,8 +1471,12 @@ function getVentasFields(){
   list["recive"] = $(".recive").val();
   list["tipo_pago"] = $(".tipo_pago").val();
   list["documento_pago"] = $(".documento_pago").val();
-  list["cantidad"] = $(".cantidad").val();
-  list["cambio"] = $(".cambio").val();
+  list["cantidad"] = $("[type=number].cantidad").val();
+  if (list["cantidad"] == ""){
+    list["cantidad"] = "0.0";
+  }
+  list["cambio"] = list.cantidad - list.total;
+  //list["cambio"] = $(".cambio").val();
   list["banco"] = $(".banco").data("id");
 
   return list;
@@ -1479,6 +1542,19 @@ function addVentasAutoComplete(selector, functionSelected){
 //ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS
 //ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS
 //ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS//ENDVENTAS
+
+//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE
+//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE
+//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE//CORTE
+
+function regAccionesCorte(){
+
+}
+
+//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE
+//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE
+//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE
+//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE//ENDCORTE
 
 
 function showSplashGeneral(type,message,$element,time){
