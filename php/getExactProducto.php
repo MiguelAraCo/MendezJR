@@ -14,7 +14,7 @@ if ($queryS === null or empty($queryS)){
   echo json_encode($constants->operationError);
 } else {
   $queryTBD = 'SELECT id, descripcion as label, descripcion as value, medida, merma_transporte, precio, minimo, barras, receta_invertida, nota, sucursal, estado FROM '.
-    $constants->prodctosTableName.' where id = "'.$queryS.'" and estado = '.$constants->estadoActivo.' and sucursal = '.$constants->sucursalActual;
+    $constants->prodctosTableName.' where barras = "'.$queryS.'" and estado = '.$constants->estadoActivo.' and sucursal = '.$constants->sucursalActual;
 
   $result = $con->query($queryTBD,array("id", "label", "value", "medida", "merma_transporte", "precio", "minimo", "barras", "receta_invertida", "nota", "sucursal", "estado"));
 
