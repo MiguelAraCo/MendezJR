@@ -1242,7 +1242,7 @@ function addDeleteNotaRow(){
 
 //2000010018459
 //____ no sirve
-//    ___ clave articulo
+//    ___ Barras del articulo
 //       _____ peso en gramos
 //            _ no sirve
 
