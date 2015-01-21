@@ -78,7 +78,6 @@
             }
         </style>
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/jquery-ui.css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -86,8 +85,8 @@
     <body>
       <div><img class="img" src="img/logo.jpg"/></div>
       <div class=" space"></div>
-      <div class="fontsssmal fecha"> Expedicion de ticket: 10/12/2014 14:32:23</div>
-      <div class="contenidoH fecha"> TICKET: 46723</div>
+      <div class="fontsssmal"> Expedicion de ticket: <span class="fecha"></span></div>
+      <div class="contenidoH"> TICKET: <span class="ticketnumber"></span></div>
       <div class="space"> </div>
       <div class="space"> </div>
       <div class="margin-mendez blank">MENDEZ JR.</div>
@@ -102,48 +101,78 @@
       <div class="contenedor">
         <div class="contenidoH"><div class="producto">Producto</div><div class="cantidad">Cantidad</div><div class="precio">Precio</div><div class="total">Total</div></div>
         <div class="space"></div>
-        <div class="contenido"><div class="producto">ProductoProducto</div><div class="cantidad">CantidadCantidad</div><div class="precio">PrecioPrecio</div><div class="total">TotalTotal</div></div>
-        <div class="contenido"><div class="producto">ProductoProducto</div><div class="cantidad">CantidadCantidad</div><div class="precio">PrecioPrecio</div><div class="total">TotalTotal</div></div>
-        <div class="contenido"><div class="producto">ProductoProducto</div><div class="cantidad">CantidadCantidad</div><div class="precio">PrecioPrecio</div><div class="total">TotalTotal</div></div>
-        <div class="contenido"><div class="producto">Producto</div><div class="cantidad">Cantidad</div><div class="precio">Precio</div><div class="total">Total</div></div>
-        <div class="contenido"><div class="producto">Producto</div><div class="cantidad">Cantidad</div><div class="precio">Precio</div><div class="total">Total</div></div>
-        <div class="contenido"><div class="producto">Producto</div><div class="cantidad">Cantidad</div><div class="precio">Precio</div><div class="total">Total</div></div>
+
       </div>
       <div class="space"> </div>
       <div class="space"> </div>
-      <div class="margin-mendez blank">TOTAL: $0.0 </div>
+      <div class="margin-mendez blank">TOTAL: $<span class='totaltotal'></span></div>
       <div class="space"> </div>
       <div class="space"> </div>
-      <div class="fonttext">Cliente:</div>
-      <div class="fonttext margin">Perenganito de tal y tal</div>
-      <div class="space"> </div>
-      <div class="precive">
-        <div class="fontsssmal">Personal autorizado:</div>
-        <div class="fontsssmal margin">Fulanito perez rodrigez</div>
-        <div class="fontsssmal margin">Merengano apellido1 apellido2</div>
-        <div class="fontsssmal margin">Sutanito codigo blalbal</div>
+      <div class="clientedata">
+
       </div>
-      <div class="space"> </div>
-      <div class="denvio">
-        <div class="fontsssmal">Direcciones de envio:</div>
-        <div class="fontsssmal margin">Av. Chapultepec #800 Int 205</div>
-        <div class="fontsssmal margin">Col. Central de Abastos, GPE, N.L. CP 67147</div>
-        <div class="space"></div>
-        <div class="fontsssmal margin">Av. Chapultepec #800 Int 205</div>
-        <div class="fontsssmal margin">Col. Central de Abastos, GPE, N.L. CP 67147</div>
-      </div>
-      <div class="space"> </div>
-      <div class="space"> </div>
       <div class="fonttext margin-mendez">Nombre y firma</div>
       <script src="js/vendor/jquery-1.11.0.min.js"></script>
       <script src="js/vendor/bootstrap.min.js"></script>
       <script src="js/vendor/jquery-ui.js"></script>
       <script>
-        //fecha y hora
+        var lcdata = JSON.parse(localStorage["lcdata"]);
+        $(".ticketnumber").html(localStorage["lastIDSale"]);
+        //DATE
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        if(dd<10) {
+            dd='0'+dd
+        }
+        if(mm<10) {
+            mm='0'+mm
+        }
+        $(".fecha").html(dd+'/'+mm+'/'+today.getFullYear()+' '+today.getHours()+':'+today.getMinutes());
+
         //contenido
+        var $contenedor = $(".contenedor");
+        for (values in lcdata["tabla"]){
+          $contenedor.append('<div class="contenido"><div class="producto">'+lcdata.tabla[values]['detalleproducto']+'</div><div class="cantidad">'+lcdata.tabla[values]['detallecantidad']+'</div><div class="precio">'+lcdata.tabla[values]['detallepu']+'</div><div class="total">'+lcdata.tabla[values]['detalletotal']+'</div></div>');
+        }
         //total
-        //precive
-        //denvio
+        $('.totaltotal').html(lcdata["total"]);
+        //cliente
+        if (lcdata["cliente"]!=""){
+          var $clientedata = $(".clientedata");
+          $clientedata.append('<div class="fonttext">Cliente:</div><div class="fonttext margin">'+lcdata["cliente"]+'</div><div class="space"> </div>');
+
+          if (lcdata["recive"]!=""){
+            $clientedata.append('<div class="precive"><div class="fontsssmal">Personal autorizado:</div></div>');
+            lcdata["recive"].shift();
+            for (valuesrecive in lcdata["recive"]){
+              $clientedata.find(".precive").append('<div class="fontsssmal margin">'+lcdata["recive"][valuesrecive]+'</div>');
+            }
+          }
+
+          if (lcdata["envio"]!=""){
+            $clientedata.append('<div class="space"> </div><div class="denvio"><div class="fontsssmal">Direcciones de envio:</div></div>');
+            lcdata["envio"].shift();
+            for (valuesrecive in lcdata["envio"]){
+              $clientedata.find(".denvio").append('<div class="fontsssmal margin">'+lcdata["envio"][valuesrecive]+'</div>');
+            }
+          }
+
+          $clientedata.append('<div class="space"></div><div class="space"></div>');
+        }
+
+        window.print(true);
+        setTimeout(function(){
+          //if (lcdata["cliente"]!=""){
+            window.print(true);
+            setTimeout(function(){
+              window.close();
+            }, 1000);
+         /* } else {
+            window.close();
+          }*/
+        }, 1000);
+
       </script>
     </body>
 

@@ -1027,6 +1027,9 @@ function bancosActualiza(){
 
 
 function regAccionesVentas(){
+
+  $(".contenEditale.barras:first").focus();
+
   var selectElementFunction = function(event, ui){
       var $currElement = $(event.target);
       $currElement.data("id",ui.item.id);
@@ -1200,6 +1203,7 @@ function regAccionesVentas(){
     $(".guardar").hide();
 
   });
+
 }
 
 function addVentasCancelar(){
@@ -1240,7 +1244,7 @@ function addDeleteNotaRow(){
 }
 
 
-//2000010018459
+//2000040018459
 //____ no sirve
 //    ___ Barras del articulo
 //       _____ peso en gramos
@@ -1257,7 +1261,7 @@ function addBarrasScan(){
         var saveVal = e.target.innerHTML.substr(4);
         var $saveElement = $(this);
         var prodid = saveVal.substring(0,3);
-        var cantidad = parseFloat(saveVal.substr(3))/10000;
+        var cantidad = parseFloat(saveVal.substr(3).substr(0,4))/100;
         $.ajax({
           url : getExactProducto,
           data : {'id': prodid},
@@ -1270,6 +1274,9 @@ function addBarrasScan(){
               $saveElement.find(".unidad").html(data[value].medida);
               $saveElement.find(".pu").html(data[value].precio);
               $saveElement.find(".cantidad").html(cantidad).blur();
+              //console.log("AQUI");
+              //console.log($saveElement.next().find(".producto"));
+              $saveElement.next().find(".barras").focus()
             }
           },
           error: function(jqXHR, textStatus, errorThrown ){
@@ -1427,6 +1434,8 @@ function ventasGuarda(){
     data : values,
     dataType : "json",
     success: function(data){
+      localStorage["lastIDSale"] = data.id
+      var xx = window.open('impresion.html');
       procesaAJAXQueryGeneral(data, null, limpiaVentasFields, limpiaVentasFields);
       if (values.tipo_pago == "Efectivo" && values.cambio > 0){
         $(".modal-body").html("Cambio: $"+(values.cantidad-values.total));
@@ -1441,7 +1450,8 @@ function ventasGuarda(){
 
 function getVentasFields(){
   var list = {};
-
+  var lcdata = {};
+  var lctabla = new Array();
   var $entrega = $(".notaImtes");
   $entrega.find("tr").each(function(index, key){
     var $this = $(this);
@@ -1461,23 +1471,80 @@ function getVentasFields(){
       list["detallepu"+index] = dvpreciounitario;
       list["detalletotal"+index] = dvtotal;
       list["detalleobs"+index] = dvobservaciones;
+      lctabla.push({"detalleproducto":$this.find(".producto").html(),
+                    "detallealmacen":$this.find(".almacen").html(),
+                    "detalleunidad":dvunidad,
+                    "detallepu":dvpreciounitario,
+                    "detalletotal":dvtotal,
+                    "detallecantidad":dvcantidad });
     }
   });
 
-  list["total"] = $("#supTotal").html().trim();
+  lcdata["tabla"] = lctabla;
+
+  list["total"] = $("#supTotal").html().trim().replace(",","");
+  lcdata["total"] = $("#supTotal").html().trim();
+
   list["cliente"] = $(".cliente").data("id") == undefined ? "" : $(".cliente").data("id")  ;
+  lcdata["cliente"] = list["cliente"] == "" ? "" : $(".cliente").val();
+
   list["factura"] = $(".factura").val().trim();
+  lcdata["factura"] = list["factura"];
+
   list["envio"] = $(".envio").val();
+  if (list["envio"] == 0){
+    if ($(".envio option").length <= 1){
+      lcdata["envio"] = "";
+    } else {
+      var envioArr =  new Array();
+      $(".envio option").each(function(){
+        envioArr.push($(this).val());
+      });
+      lcdata["envio"] = envioArr;
+    }
+  } else {
+    var envioArr =  new Array();
+    envioArr.push(list["envio"]);
+    lcdata["envio"] = envioArr;
+  }
+
+
   list["recive"] = $(".recive").val();
+  if (list["recive"] == 0){
+    if ($(".recive option").length <= 1){
+      lcdata["recive"] = "";
+    } else {
+      var envioArr =  new Array();
+      $(".recive option").each(function(){
+        envioArr.push($(this).val());
+      });
+      lcdata["recive"] = envioArr;
+    }
+  } else {
+    var envioArr =  new Array();
+    envioArr.push(list["recive"]);
+    lcdata["recive"] = envioArr;
+  }
+
   list["tipo_pago"] = $(".tipo_pago").val();
+  lcdata["tipo_pago"] = list["tipo_pago"];
+
   list["documento_pago"] = $(".documento_pago").val();
+  lcdata["documento_pago"] = list["documento_pago"];
+
   list["cantidad"] = $("[type=number].cantidad").val();
   if (list["cantidad"] == ""){
     list["cantidad"] = "0.0";
   }
+  lcdata["cantidad"] = list["cantidad"];
+
   list["cambio"] = list.cantidad - list.total;
-  //list["cambio"] = $(".cambio").val();
+  lcdata["cambio"] = list["cambio"];
+
   list["banco"] = $(".banco").data("id");
+  lcdata["banco"] = list["banco"];
+
+  localStorage["lcdata"] = JSON.stringify(lcdata);
 
   return list;
 }

@@ -1,7 +1,7 @@
 <?php
 
 header("Content-type:application/json");
-  
+
 require_once("Coneccion.php");
 require_once("constants.php");
 
@@ -16,7 +16,7 @@ $con = new Coneccion();
 $constants = new constants();
 
 if ($con->isConnectionUp()){
-  
+
   $total = $_GET["total"];
   $cliente = $_GET["cliente"];
   $factura = $_GET["factura"];
@@ -44,23 +44,23 @@ if ($con->isConnectionUp()){
       $cele++;
     }
   }
-  
-  
+
+
   $warning = false;
-  
-  
+
+
   $queryString = "INSERT INTO ".$constants->ventasTableName." (id, cliente, factura, tipo_pago, documento_pago, banco, cliente_envio, cliente_recive, cantidad_recivida, total, sucursal, estado) VALUES (NULL,'". $cliente ."', '". $factura ."', '". $tipo_pago ."', '". $documento_pago."', '". $banco ."', '". $envio ."', '". $recive ."', '". $cantidad ."', '". $total ."', '".$constants->sucursalActual."', '".$constants->estadoActivo."')";
-  
-  
+
+
   if ($con->insert($queryString)){
     $lastIDCliente = $con->getLastInserID();
     if ($lastIDCliente == 0){
       echo $constants->operationError;
     } else {
       $con->insetActionLog($usuario, $constants->ventasTableName, $lastIDCliente, $constants->operacionGeneralInsercion);
-      
+
       if ($cele > 0){
-        
+
         $queryString = "INSERT INTO ".$constants->detalleVentas." (id, venta, producto, almacen, unidad, cantidad, precio_unitario, total, observaciones, sucursal, estado) VALUES ";
         for ($i = 0; $i < $cele; $i++) {
           $queryString = $queryString.
@@ -77,19 +77,21 @@ if ($con->isConnectionUp()){
           }
         }
       }
-      
-      
+
+
       if ($warning){
         echo json_encode($constants->operationWarning);
       } else {
-        echo json_encode($constants->operationSuccess);
+        $copy = $constants->operationSuccess;
+        $copy["id"] = $lastIDCliente;
+        echo json_encode( $copy );
       }
-      
+
     }
   } else {
     echo json_encode($constants->operationError);
   }
-  
+
 } else {
   echo json_encode($constants->noDBJSON);
 }
